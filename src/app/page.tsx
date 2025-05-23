@@ -12,6 +12,12 @@ export default function Home() {
 
   const handleMoveBack = ({ type, name }: DataType) => {
     setData((prevData) => {
+      const isFound = prevData.find(
+        (item) => item.name === name && item.type === type
+      )
+      if (isFound) {
+        return prevData
+      }
       return [...prevData, { type: type, name: name }]
     })
   }
