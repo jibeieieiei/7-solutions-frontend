@@ -53,9 +53,9 @@ export default function Home() {
   }
 
   return (
-    <div className="w-full h-screen flex gap-4 *:min-w-[200px] justify-center p-4">
+    <div className="w-full h-screen flex gap-4 *:max-w-[200px] *:w-full justify-center p-4 overflow-auto">
       {/* Card */}
-      <div className="flex flex-col min-w-40 gap-4">
+      <div className="flex flex-col w-full max-w-40 gap-4 overflow-auto">
         {data.map((item) => (
           <Card
             key={item.name}
