@@ -1,4 +1,4 @@
-export const DATA = [
+export const DATA: { type: 'Fruit' | 'Vegetable'; name: string }[] = [
   {
     type: 'Fruit',
     name: 'Apple',
