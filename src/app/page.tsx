@@ -1,6 +1,8 @@
 'use client'
 import Card from '@/components/Card'
 import { DATA } from '@/constants/data'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 type DataType = { type: 'Fruit' | 'Vegetable'; name: string }
@@ -9,6 +11,7 @@ export default function Home() {
   const [data, setData] = useState(DATA)
   const [fruits, setFruits] = useState<string[]>([])
   const [vegetables, setVegetables] = useState<string[]>([])
+  const router = useRouter()
 
   const handleMoveBack = ({ type, name }: DataType) => {
     setData((prevData) => {
@@ -53,8 +56,23 @@ export default function Home() {
   }
 
   return (
-    <div className="w-full h-screen flex gap-4 *:max-w-[200px] *:w-full justify-center p-4 overflow-auto">
+    <div className="w-full h-screen flex gap-4 *:max-w-[200px] *:w-full justify-center p-4 overflow-auto relative">
       {/* Card */}
+      <button
+        className="absolute left-4 bottom-4 scale-50 hover:scale-100 cursor-pointer"
+        onClick={() => {
+          router.push('https://github.com/jibeieieiei/7-solutions-frontend')
+        }}
+      >
+        <Image
+          src="/github.jpeg"
+          alt="github"
+          width={100}
+          height={100}
+          className=""
+        />
+      </button>
+
       <div className="flex flex-col w-full max-w-40 gap-4 overflow-auto">
         {data.map((item) => (
           <Card
