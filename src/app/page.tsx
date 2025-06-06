@@ -11,6 +11,8 @@ export default function Home() {
   const [data, setData] = useState(DATA)
   const [fruits, setFruits] = useState<string[]>([])
   const [vegetables, setVegetables] = useState<string[]>([])
+  const [timeoutMap, setTimeoutMap] = useState<Map<string, number>>(new Map())
+
   const router = useRouter()
 
   const handleMoveBack = ({ type, name }: DataType) => {
@@ -28,25 +30,43 @@ export default function Home() {
   const handleMoveToColumn = ({ type, name }: DataType) => {
     if (type === 'Fruit') {
       setFruits([...fruits, name])
-      setTimeout(() => {
-        setFruits((prevFruits) => {
-          return prevFruits.filter((item) => item !== name)
-        })
+      const timeoutId = window.setTimeout(() => {
+        setFruits((prev) => prev.filter((item) => item !== name))
         handleMoveBack({ type, name })
+        setTimeoutMap((prev) => {
+          const newMap = new Map(prev)
+          newMap.delete(name)
+          return newMap
+        })
       }, 5000)
+      setTimeoutMap((prev) => new Map(prev).set(name, timeoutId))
     } else {
       setVegetables([...vegetables, name])
-      setTimeout(() => {
-        setVegetables((prevVegetables) => {
-          return prevVegetables.filter((item) => item !== name)
-        })
+      const timeoutId = window.setTimeout(() => {
+        setVegetables((prev) => prev.filter((item) => item !== name))
         handleMoveBack({ type, name })
+        setTimeoutMap((prev) => {
+          const newMap = new Map(prev)
+          newMap.delete(name)
+          return newMap
+        })
       }, 5000)
+      setTimeoutMap((prev) => new Map(prev).set(name, timeoutId))
     }
     setData(data.filter((item) => item.name !== name || item.type !== type))
   }
 
   const handleMoveToList = ({ type, name }: DataType) => {
+    const existingTimeoutId = timeoutMap.get(name)
+    if (existingTimeoutId) {
+      clearTimeout(existingTimeoutId)
+      setTimeoutMap((prev) => {
+        const newMap = new Map(prev)
+        newMap.delete(name)
+        return newMap
+      })
+    }
+
     if (type === 'Fruit') {
       setFruits(fruits.filter((fruit) => fruit !== name))
     } else {
